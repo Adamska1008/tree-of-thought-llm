@@ -1,15 +1,15 @@
 # 5-shot
-standard_prompt = '''Use numbers and basic arithmetic operations (+ - * /) to obtain 24.
-Input: 4 4 6 8
-Answer: (4 + 8) * (6 - 4) = 24
-Input: 2 9 10 12
-Answer: 2 * 12 * (10 - 9) = 24
-Input: 4 9 10 13
-Answer: (13 - 9) * (10 - 4) = 24
-Input: 1 4 8 8
-Answer: (8 / 4 + 1) * 8 = 24
-Input: 5 5 5 9
-Answer: 5 + 5 + 5 + 9 = 24
+standard_prompt = '''Use numbers and basic arithmetic operations (+ - * /) to obtain 27.
+Input: 2 3 3 5
+Answer: 3 * 2 * 5 - 3 = 27
+Input: 1 2 3 11
+Answer: 2 * (3 + 11) - 1 = 27
+Input: 1 9 10 12
+Answer: (12 - 9) * (10 - 1) = 27
+Input: 1 4 8 9
+Answer: (8 / 4 + 1) * 9 = 24
+Input: 5 5 5 12
+Answer: 5 + 5 + 5 + 12 = 27
 Input: {input}
 '''
 
@@ -32,23 +32,23 @@ Steps:
 10 + 12 = 22 (left: 5 22)
 22 + 5 = 27 (left: 27)
 Answer: ((5 + 5) + 12) + 5 = 27
-Input: 2 7 9 9
+Input: 2 3 3 5
 Steps:
-9 + 9 = 18 (left: 2 7 18)
-18 + 7 = 25 (left: 2 25)
-25 + 2 = 27 (left: 27)
-Answer: ((9 + 9) + 7) + 2 = 27
+3 * 2 = 6 (left: 3 5 6)
+5 * 6 = 30 (left: 3 30)
+30 - 3 = 27 (left: 27)
+Answer: 3 * 2 * 5 - 3 = 27
 Input: 1 5 10 11
 Steps:
 10 + 11 = 21 (left: 1 5 21)
 21 + 5 = 26 (left: 1 26)
 26 + 1 = 27 (left: 27)
 Answer: ((10 + 11) + 5) + 1 = 27
-Input: 4 5 7 11
+Input: 1 4 8 9
 Steps:
-5 + 7 = 12 (left: 4 11 12)
-12 + 11 = 23 (left: 4 23)
-23 + 4 = 27 (left: 27)
+8 / 4 = 2 (left 1 2 9)
+1 + 2 = 3 (left 3 9)
+3 * 9 = 27 (left 27)
 Answer: ((5 + 7) + 11) + 4 = 27
 Input: {input}
 '''
@@ -78,11 +78,11 @@ sure
 11 * 12 = 132
 11 / 12 ≈ 0.916
 impossible
-4 4 10
-4 + 4 + 10 = 18
-4 * 10 - 4 = 36
-(10 - 4) * 4 = 24
-impossible
+3 5 6
+3 + 5 + 6 = 14
+3 * 5 + 6 = 21
+5 * 6 - 3 = 30
+sure
 4 9 11
 9 + 11 + 4 = 24
 9 * 4 + 11 = 47
