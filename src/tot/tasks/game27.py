@@ -3,7 +3,7 @@ import os
 import sympy
 import pandas as pd
 from tot.tasks.base import Task, DATA_PATH
-from tot.prompts.gamen import * 
+from tot.prompts.game27 import * 
 
 
 def get_current_numbers(y: str) -> str:
@@ -11,29 +11,28 @@ def get_current_numbers(y: str) -> str:
     return last_line.split('left: ')[-1].split(')')[0]
 
 
-class GameNTask(Task):
+class Game27Task(Task):
     """
-    Input (x)   : a string of 5 numbers, with the last number as target
-    Output (y)  : a trajectory of 3 steps to reach last number
+    Input (x)   : a string of 4 numbers
+    Output (y)  : a trajectory of 3 steps to reach 27
     Reward (r)  : 0 or 1, depending on whether the trajectory is correct
     Input Example: 
-        1 3 4 6 27
+        1 3 4 6
     Output Example: 
         3 * 1 = 3 (left: 3 4 6)
         4 * 6 = 24 (left: 3 24)
         3 + 24 = 27 (left: 27)
     """
-    def __init__(self, target:int=24):
+    def __init__(self):
         """
         file: a csv file (fixed)
         """
         super().__init__()
         # path = os.path.join(DATA_PATH, '24', file)
-        self.data = ["2 3 2 3"] # (2 + 3) * (2 * 3) = 30
+        self.data = ["1 3 4 6"]
         self.value_cache = {}
         self.steps = 4
         self.stops = ['\n'] * 4
-        self.target = target
 
     def __len__(self) -> int:
         return len(self.data)
@@ -49,22 +48,20 @@ class GameNTask(Task):
             return {'r': 0}
         try:
             # print(sympy.simplify(expression))
-            return {'r': int(sympy.simplify(expression) == self.target)}
+            return {'r': int(sympy.simplify(expression) == 27)}
         except Exception as e:
             # print(e)
             return {'r': 0}
             
-    @staticmethod
-    def standard_prompt_wrap(x: str, y:str='') -> str:
+    def standard_prompt_wrap(self, x: str, y:str='') -> str:
         return standard_prompt.format(input=x) + y
 
-    @staticmethod
-    def cot_prompt_wrap(x: str, y:str='') -> str:
+    def cot_prompt_wrap(self, x: str, y:str='') -> str:
         return cot_prompt.format(input=x) + y
     
     def propose_prompt_wrap(self, x: str, y: str='') -> str:
         current_numbers = get_current_numbers(y if y else x)
-        if current_numbers == str(self.target):
+        if current_numbers == '27':
             prompt = cot_prompt.format(input=x) + 'Steps:' + y
             # print([prompt])
         else:
